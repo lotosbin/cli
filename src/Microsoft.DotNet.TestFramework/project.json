@@ -1,5 +1,6 @@
 {
   "version": "1.0.0-preview2-*",
+  "authors": ["dotnet"],
   "description": "Microsoft.DotNet.TestFramework Class Library",
   "buildOptions": {
     "keyFile": "../../tools/Key.snk"

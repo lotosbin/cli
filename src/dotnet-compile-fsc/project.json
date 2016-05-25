@@ -1,5 +1,7 @@
 {
   "version": "1.0.0-preview2-*",
+  "authors": ["dotnet"],
+  "description": "dotnet-compile-fsc",
   "buildOptions": {
     "emitEntryPoint": true,
     "compile": {

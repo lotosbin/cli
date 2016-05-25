@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-*",
+  "version": "1.0.0-rc",
   "buildOptions": {
     "emitEntryPoint": true
   },
@@ -21,7 +21,7 @@
   },
   "tools": {
     "dotnet-portable": {
-      "version": "1.0.0",
+      "version": "1.0.0-rc",
       "target": "package"
     }
   }

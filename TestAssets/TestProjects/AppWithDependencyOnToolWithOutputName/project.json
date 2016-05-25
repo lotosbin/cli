@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-*",
+  "version": "1.0.0-rc",
   "buildOptions": {
     "emitEntryPoint": true
   },
@@ -14,7 +14,7 @@
   },
   "tools": {
     "ToolWithOutputName": {
-      "version": "1.0.0",
+      "version": "1.0.0-rc",
       "target": "package"
     }
   }
