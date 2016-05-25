@@ -1,5 +1,7 @@
 {
   "version": "1.0.0-preview3-*",
+  "authors": ["dotnet"],
+  "description": "Microsoft.DotNet.ProjectModel.Workspaces",
   "buildOptions": {
     "keyFile": "../../tools/Key.snk"
   },

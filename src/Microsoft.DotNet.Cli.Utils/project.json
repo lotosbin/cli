@@ -1,5 +1,7 @@
 {
   "version": "1.0.0-preview3-*",
+  "authors": ["dotnet"],
+  "description": "Microsoft.DotNet.Cli.Utils",
   "buildOptions": {
     "keyFile": "../../tools/Key.snk",
     "warningsAsErrors": true
@@ -8,10 +10,10 @@
     "Microsoft.DotNet.ProjectModel": {
       "target": "project"
     },
-    "NuGet.Versioning": "3.5.0-rc-1285",
-    "NuGet.Packaging": "3.5.0-rc-1285",
-    "NuGet.Frameworks": "3.5.0-rc-1285",
-    "NuGet.ProjectModel": "3.5.0-rc-1285"
+    "NuGet.Versioning": "3.5.0-rc-1351",
+    "NuGet.Packaging": "3.5.0-rc-1351",
+    "NuGet.Frameworks": "3.5.0-rc-1351",
+    "NuGet.ProjectModel": "3.5.0-rc-1351"
   },
   "frameworks": {
     "net451": {

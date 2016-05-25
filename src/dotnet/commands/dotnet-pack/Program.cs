@@ -2,6 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Microsoft.DotNet.Cli.CommandLine;
@@ -52,29 +54,41 @@ namespace Microsoft.DotNet.Tools.Compiler
                     return 1;
                 }
 
-                // Set defaults based on the environment
-                var workspace = BuildWorkspace.Create(versionSuffix.Value());
-
-                var configValue = configuration.Value() ?? Cli.Utils.Constants.DefaultConfiguration;
+                var configValue = configuration.Value() ?? Constants.DefaultConfiguration;
                 var outputValue = output.Value();
                 var buildBasePathValue = PathUtility.GetFullPath(buildBasePath.Value());
 
-                var contexts = workspace.GetProjectContextCollection(pathValue).FrameworkOnlyContexts;
-                var project = contexts.First().ProjectFile;
 
-                var artifactPathsCalculator = new ArtifactPathsCalculator(project, buildBasePathValue, outputValue, configValue);
-                var packageBuilder = new PackagesGenerator(contexts, artifactPathsCalculator, configValue);
+                // Map dotnet pack arguments into NuGet pack arguments
+                string properties = $"Configuration={configValue}";
 
-                project.Serviceable = serviceable.HasValue();
+                List<string> arguments = new List<string>() { "pack", "--properties", properties };
 
-                int buildResult = 0;
                 if (!noBuild.HasValue())
                 {
-                    var buildProjectCommand = new BuildProjectCommand(project, buildBasePathValue, configValue, workspace);
-                    buildResult = buildProjectCommand.Execute();
+                    arguments.Add("--build");
                 }
+                if (!string.IsNullOrWhiteSpace(outputValue))
+                {
+                    arguments.Add("--output-directory");
+                    arguments.Add(outputValue);
+                }
+                if (!string.IsNullOrWhiteSpace(buildBasePathValue))
+                {
+                    arguments.Add("--base-path");
+                    arguments.Add(buildBasePathValue);
+                }
+				if (serviceable.HasValue()
+				{
+					arguments.Add("--serviceable");
+				}
 
-                return buildResult != 0 ? buildResult : packageBuilder.Build();
+                arguments.Add("--verbosity");
+                arguments.Add("Verbose");
+
+                arguments.Add(pathValue);
+
+                return NuGet3.Pack(arguments);
             });
 
             try

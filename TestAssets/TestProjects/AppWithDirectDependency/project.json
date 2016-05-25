@@ -1,12 +1,12 @@
 {
-  "version": "1.0.0-*",
+  "version": "1.0.0-rc",
   "buildOptions": {
     "emitEntryPoint": true
   },
   "dependencies": {
     "Microsoft.NETCore.App": "1.0.0-rc3-004391",
     "dotnet-hello": {
-      "version": "1.0.0",
+      "version": "1.0.0-rc",
       "target": "package"
     }
   },

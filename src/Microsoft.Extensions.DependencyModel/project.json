@@ -1,6 +1,7 @@
 {
   "description": "Abstractions for reading `.deps` files.",
   "version": "1.0.0-rc4-*",
+  "authors": ["dotnet"],
   "buildOptions": {
     "warningsAsErrors": true,
     "keyFile": "../../tools/Key.snk"

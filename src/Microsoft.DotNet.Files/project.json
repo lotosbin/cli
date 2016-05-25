@@ -1,5 +1,6 @@
 {
   "version": "1.0.0-preview3-*",
+  "authors": ["dotnet"],
   "buildOptions": {
     "keyFile": "../../tools/Key.snk"
   },

@@ -1,5 +1,7 @@
 {
-  "version": "1.0.0-rc-*",
+  "version": "1.0.0-rc",
+  "authors": ["dotnet"],
+  "description": "test",
   "buildOptions": {
     "emitEntryPoint": true
   },
