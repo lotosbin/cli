@@ -56,7 +56,7 @@ namespace Microsoft.DotNet.Tools.Compiler
                 var configValue = configuration.Value() ?? Constants.DefaultConfiguration;
                 var outputValue = output.Value();
                 var buildBasePathValue = PathUtility.GetFullPath(buildBasePath.Value());
-
+                var versionSuffixValue = versionSuffix.Value();
 
                 // Map dotnet pack arguments into NuGet pack arguments
                 string properties = $"Configuration={configValue}";
@@ -76,6 +76,11 @@ namespace Microsoft.DotNet.Tools.Compiler
                 {
                     arguments.Add("--base-path");
                     arguments.Add(buildBasePathValue);
+                }
+                if (!string.IsNullOrWhiteSpace(versionSuffixValue))
+                {
+                    arguments.Add("--suffix");
+                    arguments.Add(versionSuffixValue);
                 }
 
                 arguments.Add("--verbosity");
