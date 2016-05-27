@@ -208,11 +208,10 @@ namespace Microsoft.DotNet.Cli.Build
 
                 dotnet.Pack(
                     projectFile,
-                    "--no-build",
-                    "--build-base-path", packagingBuildBasePath,
-                    "--output", Dirs.PackagesIntermediate,
-                    "--configuration", configuration,
-                    "--version-suffix", versionSuffix)
+                    "--base-path", packagingBuildBasePath,
+                    "--output-directory", Dirs.PackagesIntermediate,
+                    "--properties", $"Configuration={configuration}",
+                    "--suffix", versionSuffix)
                     .Execute()
                     .EnsureSuccessful();
             }

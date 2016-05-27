@@ -186,14 +186,13 @@ namespace Microsoft.DotNet.Cli.Build
                 var projectJson = Path.Combine(fullPath, "project.json");
                 var dotnetPackArgs = new List<string> {
                     projectJson,
-                    "--no-build",
-                    "--build-base-path", Dirs.TestPackagesBuild,
-                    "--output", Dirs.TestPackages
+                    "--base-path", Dirs.TestPackagesBuild,
+                    "--output-directory", Dirs.TestPackages
                 };
 
                 if (!string.IsNullOrEmpty(versionSuffix))
                 {
-                    dotnetPackArgs.Add("--version-suffix");
+                    dotnetPackArgs.Add("--suffix");
                     dotnetPackArgs.Add(versionSuffix);
                 }
 
