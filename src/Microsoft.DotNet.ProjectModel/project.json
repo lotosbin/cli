@@ -11,8 +11,8 @@
       "target": "project"
     },
     "Newtonsoft.Json": "7.0.1",
-    "NuGet.Packaging": "3.5.0-rc-1351",
-    "NuGet.RuntimeModel": "3.5.0-rc-1351",
+    "NuGet.Packaging": "3.5.0-rc-1365",
+    "NuGet.RuntimeModel": "3.5.0-rc-1365",
     "System.Reflection.Metadata": "1.3.0-rc3-24126-00"
   },
   "frameworks": {

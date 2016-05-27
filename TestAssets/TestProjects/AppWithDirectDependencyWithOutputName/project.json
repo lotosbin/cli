@@ -17,7 +17,7 @@
   },
   "tools": {
     "dotnet-dependency-tool-invoker": {
-      "version": "1.0.0-*",
+      "version": "1.0.0-rc-*",
       "imports": [
         "dnxcore50",
         "portable-net45+win8"
