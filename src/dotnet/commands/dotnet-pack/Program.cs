@@ -88,6 +88,8 @@ namespace Microsoft.DotNet.Tools.Compiler
 					arguments.Add("--serviceable");
 				}
 
+                arguments.Add("--symbols");
+
                 arguments.Add("--verbosity");
                 arguments.Add("Verbose");
 
