@@ -51,7 +51,7 @@ namespace Microsoft.DotNet.Tools.Test.Utilities
             {
                 return _configuration == string.Empty ?
                                            "" :
-                                           $"-c {_configuration}";
+                                           $"-p Configuration={_configuration}";
             }
         }
 
@@ -61,7 +61,7 @@ namespace Microsoft.DotNet.Tools.Test.Utilities
             {
                 return _versionSuffix == string.Empty ?
                                            "" :
-                                           $"--version-suffix {_versionSuffix}";
+                                           $"--suffix {_versionSuffix}";
             }
         }
 
@@ -102,7 +102,7 @@ namespace Microsoft.DotNet.Tools.Test.Utilities
 
         private string BuildArgs()
         {
-            return $"{_projectPath} {OutputOption} {BuildBasePathOption} {TempOutputOption} {ConfigurationOption} {VersionSuffixOption} {ServiceableOption}";
+            return $"{_projectPath} {OutputOption} {BuildBasePathOption} {TempOutputOption} {ConfigurationOption} {VersionSuffixOption} {ServiceableOption} --build";
         }
     }
 }

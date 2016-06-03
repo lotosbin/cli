@@ -145,7 +145,7 @@ namespace Microsoft.DotNet.Tools.Compiler.Tests
                 .CreateTestInstance("TestAppSimple")
                 .WithLockFiles();
 
-            new PackCommand(Project.FileName)
+            new PackCommand(Project.FileName, versionSuffix: "rc")
                 .WithWorkingDirectory(testInstance.TestRoot)
                 .Execute()
                 .Should()
