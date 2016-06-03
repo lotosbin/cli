@@ -83,6 +83,8 @@ namespace Microsoft.DotNet.Tools.Compiler
                     arguments.Add(versionSuffixValue);
                 }
 
+                arguments.Add("--symbols");
+
                 arguments.Add("--verbosity");
                 arguments.Add("Verbose");
 
