@@ -1,4 +1,7 @@
 {
+  "version": "1.0.0-rc",
+  "authors": ["test"],
+  "description": "Library with Output Assembly Name",
   "buildOptions": {
     "outputName": "MyLibrary"
   },

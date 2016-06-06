@@ -33,13 +33,13 @@ namespace Microsoft.DotNet.Tools.Compiler.Tests
             CopyProjectToTempDir(sourceTestLibDir, testLibDir);
 
             var testProject = GetProjectPath(testLibDir);
-            var packCommand = new PackCommand(testProject, configuration: "Test");
+            var packCommand = new PackCommand(testProject, configuration: "Test", output: Path.Combine(testLibDir.Path, "bin", "Test"));
             var result = packCommand.Execute();
             result.Should().Pass();
 
             var outputDir = new DirectoryInfo(Path.Combine(testLibDir.Path, "bin", "Test"));
             outputDir.Should().Exist();
-            outputDir.Should().HaveFiles(new [] { "TestLibrary.1.0.0.nupkg" , "TestLibrary.1.0.0.symbols.nupkg" });
+            outputDir.Should().HaveFiles(new [] { "TestLibrary.1.0.0-rc.nupkg" , "TestLibrary.1.0.0-rc.symbols.nupkg" });
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace Microsoft.DotNet.Tools.Compiler.Tests
             result.Should().Pass();
 
             outputDir.Should().Exist();
-            outputDir.Should().HaveFiles(new[] { "TestLibrary.1.0.0.nupkg", "TestLibrary.1.0.0.symbols.nupkg" });
+            outputDir.Should().HaveFiles(new[] { "TestLibrary.1.0.0-rc.nupkg", "TestLibrary.1.0.0-rc.symbols.nupkg" });
         }
 
         [Fact]
@@ -68,16 +68,16 @@ namespace Microsoft.DotNet.Tools.Compiler.Tests
             var testInstance = TestAssetsManager.CreateTestInstance("TestLibraryWithConfiguration")
                                                 .WithLockFiles();
 
-            var cmd = new PackCommand(Path.Combine(testInstance.TestRoot, Project.FileName),  versionSuffix: "85");
+            var cmd = new PackCommand(Path.Combine(testInstance.TestRoot, Project.FileName),  versionSuffix: "85", output: Path.Combine(testInstance.TestRoot, "bin", "Debug"));
             cmd.Execute().Should().Pass();
 
             var output = Path.Combine(testInstance.TestRoot, "bin", "Debug", DefaultLibraryFramework, "TestLibraryWithConfiguration.dll");
             var informationalVersion = PeReaderUtils.GetAssemblyAttributeValue(output, "AssemblyInformationalVersionAttribute");
 
             informationalVersion.Should().NotBeNull();
-            informationalVersion.Should().BeEquivalentTo("1.0.0-85");
+            informationalVersion.Should().BeEquivalentTo("1.0.0-rc-85");
 
-            var outputPackage = Path.Combine(testInstance.TestRoot, "bin", "Debug", "TestLibraryWithConfiguration.1.0.0-85.nupkg");
+            var outputPackage = Path.Combine(testInstance.TestRoot, "bin", "Debug", "TestLibraryWithConfiguration.1.0.0-rc-85.nupkg");
             File.Exists(outputPackage).Should().BeTrue(outputPackage);
         }
 
@@ -87,10 +87,10 @@ namespace Microsoft.DotNet.Tools.Compiler.Tests
             var testInstance = TestAssetsManager.CreateTestInstance("TestLibraryWithConfiguration")
                                                    .WithLockFiles();
 
-            var cmd = new PackCommand(Path.Combine(testInstance.TestRoot, Project.FileName), buildBasePath: "buildBase");
+            var cmd = new PackCommand(Path.Combine(testInstance.TestRoot, Project.FileName), buildBasePath: "buildBase", output: Path.Combine(testInstance.TestRoot, "bin", "Debug"));
             cmd.Execute().Should().Pass();
 
-            var outputPackage = Path.Combine(testInstance.TestRoot, "bin", "Debug", "TestLibraryWithConfiguration.1.0.0.nupkg");
+            var outputPackage = Path.Combine(testInstance.TestRoot, "bin", "Debug", "TestLibraryWithConfiguration.1.0.0-rc.nupkg");
             File.Exists(outputPackage).Should().BeTrue(outputPackage);
 
             var zip = ZipFile.Open(outputPackage, ZipArchiveMode.Read);
@@ -104,10 +104,10 @@ namespace Microsoft.DotNet.Tools.Compiler.Tests
                                                    .WithLockFiles()
                                                    .WithBuildArtifacts();
 
-            var cmd = new PackCommand(Path.Combine(testInstance.TestRoot, Project.FileName));
+            var cmd = new PackCommand(Path.Combine(testInstance.TestRoot, Project.FileName), output: Path.Combine(testInstance.TestRoot, "bin", "Debug"));
             cmd.Execute().Should().Pass();
 
-            var outputPackage = Path.Combine(testInstance.TestRoot, "bin", "Debug", "EndToEndTestApp.1.0.0.nupkg");
+            var outputPackage = Path.Combine(testInstance.TestRoot, "bin", "Debug", "EndToEndTestApp.1.0.0-rc.nupkg");
             File.Exists(outputPackage).Should().BeTrue(outputPackage);
 
             var zip = ZipFile.Open(outputPackage, ZipArchiveMode.Read);
@@ -123,15 +123,15 @@ namespace Microsoft.DotNet.Tools.Compiler.Tests
                     .CreateTestInstance("LibraryWithOutputAssemblyName")
                     .WithLockFiles();
 
-            var cmd = new PackCommand(Path.Combine(testInstance.TestRoot, Project.FileName));
+            var cmd = new PackCommand(Path.Combine(testInstance.TestRoot, Project.FileName), output: Path.Combine(testInstance.TestRoot, "bin", "Debug"));
             cmd.Execute().Should().Pass();
 
-            var outputPackage = Path.Combine(testInstance.TestRoot, "bin", "Debug", "LibraryWithOutputAssemblyName.1.0.0.nupkg");
+            var outputPackage = Path.Combine(testInstance.TestRoot, "bin", "Debug", "LibraryWithOutputAssemblyName.1.0.0-rc.nupkg");
             File.Exists(outputPackage).Should().BeTrue(outputPackage);
             var zip = ZipFile.Open(outputPackage, ZipArchiveMode.Read);
             zip.Entries.Should().Contain(e => e.FullName == "lib/netstandard1.5/MyLibrary.dll");
 
-            var symbolsPackage = Path.Combine(testInstance.TestRoot, "bin", "Debug", "LibraryWithOutputAssemblyName.1.0.0.symbols.nupkg");
+            var symbolsPackage = Path.Combine(testInstance.TestRoot, "bin", "Debug", "LibraryWithOutputAssemblyName.1.0.0-rc.symbols.nupkg");
             File.Exists(symbolsPackage).Should().BeTrue(symbolsPackage);
             zip = ZipFile.Open(symbolsPackage, ZipArchiveMode.Read);
             zip.Entries.Should().Contain(e => e.FullName == "lib/netstandard1.5/MyLibrary.dll");
