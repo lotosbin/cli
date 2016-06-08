@@ -83,7 +83,7 @@ namespace Microsoft.DotNet.Tools.Compiler
                     arguments.Add("--suffix");
                     arguments.Add(versionSuffixValue);
                 }
-				if (serviceable.HasValue()
+				if (serviceable.HasValue())
 				{
 					arguments.Add("--serviceable");
 				}
