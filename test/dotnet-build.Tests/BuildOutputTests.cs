@@ -154,7 +154,7 @@ namespace Microsoft.DotNet.Tools.Builder.Tests
             var fileVersion = PeReaderUtils.GetAssemblyAttributeValue(output, "AssemblyFileVersionAttribute");
 
             informationalVersion.Should().NotBeNull();
-            informationalVersion.Should().BeEquivalentTo("1.0.0-85");
+            informationalVersion.Should().BeEquivalentTo("1.0.0-rc-85");
 
             fileVersion.Should().NotBeNull();
             fileVersion.Should().BeEquivalentTo("1.0.0.345");
@@ -173,7 +173,7 @@ namespace Microsoft.DotNet.Tools.Builder.Tests
             var informationalVersion = PeReaderUtils.GetAssemblyAttributeValue(output, "AssemblyInformationalVersionAttribute");
 
             informationalVersion.Should().NotBeNull();
-            informationalVersion.Should().BeEquivalentTo("1.0.0-85");
+            informationalVersion.Should().BeEquivalentTo("1.0.0-rc-85");
         }
 
         [Fact]
