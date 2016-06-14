@@ -27,7 +27,7 @@ namespace Microsoft.DotNet.Tools.Compiler.Tests
         {
             var root = Temp.CreateDirectory();
 
-            var testLibDir = root.CreateDirectory("TestLibrary");
+            var testLibDir = root.CreateDirectory("TestLibrary2");
             var sourceTestLibDir = Path.Combine(_testProjectsRoot, "TestLibraryWithConfiguration");
 
             CopyProjectToTempDir(sourceTestLibDir, testLibDir);
@@ -39,7 +39,7 @@ namespace Microsoft.DotNet.Tools.Compiler.Tests
 
             var outputDir = new DirectoryInfo(Path.Combine(testLibDir.Path, "bin", "Test"));
             outputDir.Should().Exist();
-            outputDir.Should().HaveFiles(new [] { "TestLibrary.1.0.0-rc.nupkg" , "TestLibrary.1.0.0-rc.symbols.nupkg" });
+            outputDir.Should().HaveFiles(new [] { "TestLibrary2.1.0.0-rc.nupkg" , "TestLibrary2.1.0.0-rc.symbols.nupkg" });
         }
 
         [Fact]
@@ -47,7 +47,7 @@ namespace Microsoft.DotNet.Tools.Compiler.Tests
         {
             var root = Temp.CreateDirectory();
 
-            var testLibDir = root.CreateDirectory("TestLibrary");
+            var testLibDir = root.CreateDirectory("TestLibrary3");
             var sourceTestLibDir = Path.Combine(_testProjectsRoot, "TestLibraryWithConfiguration");
 
             CopyProjectToTempDir(sourceTestLibDir, testLibDir);
@@ -59,25 +59,32 @@ namespace Microsoft.DotNet.Tools.Compiler.Tests
             result.Should().Pass();
 
             outputDir.Should().Exist();
-            outputDir.Should().HaveFiles(new[] { "TestLibrary.1.0.0-rc.nupkg", "TestLibrary.1.0.0-rc.symbols.nupkg" });
+            outputDir.Should().HaveFiles(new[] { "TestLibrary3.1.0.0-rc.nupkg", "TestLibrary3.1.0.0-rc.symbols.nupkg" });
         }
 
         [Fact]
         public void SettingVersionSuffixFlag_ShouldStampAssemblyInfoInOutputAssemblyAndPackage()
         {
-            var testInstance = TestAssetsManager.CreateTestInstance("TestLibraryWithConfiguration")
-                                                .WithLockFiles();
+            var root = Temp.CreateDirectory();
 
-            var cmd = new PackCommand(Path.Combine(testInstance.TestRoot, Project.FileName), versionSuffix: "85", output: Path.Combine(testInstance.TestRoot, "bin", "Debug"));
+            var testLibDir = root.CreateDirectory("TestLibraryWithConfiguration");
+            var sourceTestLibDir = Path.Combine(_testProjectsRoot, "TestLibraryWithConfiguration");
+
+            CopyProjectToTempDir(sourceTestLibDir, testLibDir);
+
+            var testProject = GetProjectPath(testLibDir);
+            var testFolder = Path.GetDirectoryName(testProject);
+
+            var cmd = new PackCommand(testProject, versionSuffix: "85", output: Path.Combine(testFolder, "bin", "Debug"), buildBasePath: root.Path);
             cmd.Execute().Should().Pass();
 
-            var output = Path.Combine(testInstance.TestRoot, "bin", "Debug", DefaultLibraryFramework, "TestLibraryWithConfiguration.dll");
+            var output = Path.Combine(testFolder, "bin", "Debug", DefaultLibraryFramework, "TestLibraryWithConfiguration.dll");
             var informationalVersion = PeReaderUtils.GetAssemblyAttributeValue(output, "AssemblyInformationalVersionAttribute");
 
             informationalVersion.Should().NotBeNull();
             informationalVersion.Should().BeEquivalentTo("1.0.0-rc-85");
 
-            var outputPackage = Path.Combine(testInstance.TestRoot, "bin", "Debug", "TestLibraryWithConfiguration.1.0.0-rc-85.nupkg");
+            var outputPackage = Path.Combine(testFolder, "bin", "Debug", "TestLibraryWithConfiguration.1.0.0-rc-85.nupkg");
             File.Exists(outputPackage).Should().BeTrue(outputPackage);
         }
 
@@ -157,25 +164,25 @@ namespace Microsoft.DotNet.Tools.Compiler.Tests
         {
             var root = Temp.CreateDirectory();
 
-            var testLibDir = root.CreateDirectory("TestLibrary");
+            var testLibDir = root.CreateDirectory("TestLibrary1");
             var sourceTestLibDir = Path.Combine(_testProjectsRoot, "TestLibraryWithConfiguration");
 
             CopyProjectToTempDir(sourceTestLibDir, testLibDir);
 
             var testProject = GetProjectPath(testLibDir);
-            var packCommand = new PackCommand(testProject, configuration: "Debug", output: testProject, serviceable: true);
+            var packCommand = new PackCommand(testProject, configuration: "Debug", output: Path.GetDirectoryName(testProject), serviceable: true);
             var result = packCommand.Execute();
             result.Should().Pass();
 
             var outputDir = new DirectoryInfo(testLibDir.Path);
             outputDir.Should().Exist();
-            outputDir.Should().HaveFiles(new[] { "TestLibrary.1.0.0.nupkg", "TestLibrary.1.0.0.symbols.nupkg" });
+            outputDir.Should().HaveFiles(new[] { "TestLibrary1.1.0.0-rc.nupkg", "TestLibrary1.1.0.0-rc.symbols.nupkg" });
 
-            var outputPackage = Path.Combine(outputDir.FullName, "TestLibrary.1.0.0.nupkg");
+            var outputPackage = Path.Combine(outputDir.FullName, "TestLibrary1.1.0.0-rc.nupkg");
             var zip = ZipFile.Open(outputPackage, ZipArchiveMode.Read);
-            zip.Entries.Should().Contain(e => e.FullName == "TestLibrary.nuspec");
+            zip.Entries.Should().Contain(e => e.FullName == "TestLibrary1.nuspec");
 
-            var manifestReader = new StreamReader(zip.Entries.First(e => e.FullName == "TestLibrary.nuspec").Open());
+            var manifestReader = new StreamReader(zip.Entries.First(e => e.FullName == "TestLibrary1.nuspec").Open());
             var nuspecXml = XDocument.Parse(manifestReader.ReadToEnd());
             var node = nuspecXml.Descendants().Single(e => e.Name.LocalName == "serviceable");
             Assert.Equal("true", node.Value);
